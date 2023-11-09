@@ -1,25 +1,47 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
-public class EnemyBrainLine : MonoBehaviour
+public class EnemyBrainScout : MonoBehaviour
 {
-    public Transform target;
+    public Transform[] waypoints;
+
+    [Space]
     public float moveSpeed;
     public float rotateSpeed;
+    
+    int currentWaypoint;
+    bool isOnPoint;
+
+    private void Start()
+    {
+        currentWaypoint = 0;
+    }
 
     private void FixedUpdate()
     {
-        MoveToTarget();
+        if (isOnPoint)
+        {
+            currentWaypoint++;
+            isOnPoint = false;
+        }
+
+        if (currentWaypoint == waypoints.Length)
+        {
+            currentWaypoint = 0;
+        }
+
+        FollowWaypoints();
     }
 
-    void MoveToTarget()
+    void FollowWaypoints()
     {
-        Vector3 direction = target.position - transform.position;
+        Vector3 direction = waypoints[currentWaypoint].position - transform.position;
 
         if (direction.magnitude <= 0.3f)
         {
-            return;
+            isOnPoint = true;
         }
 
         Vector3 currentForward = transform.forward;
