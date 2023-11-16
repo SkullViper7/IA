@@ -57,7 +57,5 @@ public class EnemyBrainAStar : MonoBehaviour
     {
         h = MathHelper.VectorDistance(target.position, a.position);
         f = h + g;
-
-
     }
 }
