@@ -29,7 +29,6 @@ public class EnemyBrainAStar : MonoBehaviour
             FindFastestRoute(waypoints[randomPoint], target);
             isOnPoint = false;
         }
-        MoveToPlayer();
     }
 
     void MoveToPlayer()
@@ -51,11 +50,17 @@ public class EnemyBrainAStar : MonoBehaviour
         Vector3 velocity = moveSpeed * Time.deltaTime * direction.normalized;
 
         transform.Translate(velocity, Space.World);
+
+        g++;
     }
 
     void FindFastestRoute(Transform a, Transform target)
     {
-        h = MathHelper.VectorDistance(target.position, a.position);
-        f = h + g;
+        foreach (Transform t in waypoints)
+        {
+            h = MathHelper.VectorDistance(target.position, a.position);
+            f = h + g;
+        }
+
     }
 }
