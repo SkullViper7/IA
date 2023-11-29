@@ -18,10 +18,16 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     [SerializeField]
     float _moveSpeed;
+    AudioSource _audioSource;
+    public AudioClip _audioClip;
+    public bool isFired;
+
+    bool isAudioPlaying;
 
     void Awake()
     {
         _characterController = GetComponent<CharacterController>();
+        _audioSource = GetComponent<AudioSource>();
     }
 
     void Update()
@@ -36,5 +42,18 @@ public class PlayerController : MonoBehaviour
         Vector3 velocity = inputDirection * _moveSpeed * Time.deltaTime;
 
         _characterController.Move(velocity);
+
+        if (Input.GetAxis("Fire1") != 0 && !isAudioPlaying)
+        {
+            _audioSource.PlayOneShot(_audioClip);
+            isFired = true;
+            isAudioPlaying = true;
+            Invoke("ResetAudioStatus", _audioClip.length);
+        }
+    }
+
+    void ResetAudioStatus()
+    {
+        isAudioPlaying = false;
     }
 }
